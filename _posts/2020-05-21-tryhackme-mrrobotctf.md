@@ -3,7 +3,7 @@ title: "Mr Robot CTF walkthrough"
 date: 2020-05-21
 tags: [ctf, tryhackme, mrrobot, walkthrough]
 header:
-  image: "/images/tryhackme/MrRobotCTF/thm.png"
+  image: "/images/tryhackme/thm.png"
 ---
 
 # Tryhackme - [Mr Robot CTF](https://tryhackme.com/room/mrrobot)
