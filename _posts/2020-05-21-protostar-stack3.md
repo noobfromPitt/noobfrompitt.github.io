@@ -6,7 +6,7 @@ header:
   image: "/images/protostar/protostar.png"
 ---
 
-# Protostar exercises - [stack3](https://exploit-exercises.lains.space/protostar/stack3/)
+## Protostar exercises - [stack3](https://exploit-exercises.lains.space/protostar/stack3/)
 
 #### About
 Stack3 looks at environment variables, and how they can be set, and overwriting function pointers stored on the stack (as a prelude to overwriting the saved EIP)

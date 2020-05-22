@@ -6,7 +6,7 @@ header:
   image: "/images/protostar/protostar.png"
 ---
   
-# Protostar exercises - [stack2](https://exploit-exercises.lains.space/protostar/stack2/)
+## Protostar exercises - [stack2](https://exploit-exercises.lains.space/protostar/stack2/)
 
 #### About
 Stack2 looks at environment variables, and how they can be set.

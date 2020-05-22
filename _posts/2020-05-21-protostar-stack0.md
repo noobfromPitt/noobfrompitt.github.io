@@ -6,7 +6,7 @@ header:
   image: "/images/protostar/protostar.png"
 ---
 
-# Protostar exercises - [stack0](https://exploit-exercises.lains.space/protostar/stack0/)
+## Protostar exercises - [stack0](https://exploit-exercises.lains.space/protostar/stack0/)
 
 #### About
 This level introduces the concept that memory can be accessed outside of its allocated region, how the stack variables are laid out, and that modifying outside of the allocated memory can modify program execution.

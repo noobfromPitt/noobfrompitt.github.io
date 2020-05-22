@@ -6,9 +6,9 @@ header:
   image: "/images/tryhackme/thm.png"
 ---
 
-# Tryhackme - [Vulnversity](https://tryhackme.com/room/vulnversity)
+## Tryhackme - [Vulnversity](https://tryhackme.com/room/vulnversity)
 
-## Reconnaissance
+### Reconnaissance
 
 `nmap -A 10.10.101.118`
 This will scan for the versions of services and also detects host OS using fingerprinting.
@@ -18,7 +18,7 @@ ports 21, 22, 139, 445, 3128, 3333 are open
 
 The nmap output didnt predict the host OS. We can check again using `-O` option
 
-## Locating directories using GoBuster
+### Locating directories using GoBuster
 
 The website hosted on port 3333 has a lot of links but none of them work. Also, its made using wordpress, so we can use `wpscan`
 Lets find more pages using gobuster
@@ -28,7 +28,7 @@ Lets find more pages using gobuster
 
 Looks like there is an upload option in /internal
 
-## Compromize the webserver
+### Compromize the webserver
 
 Once the file to be uploaded is selected, it displays the file name before hitting the submit button. This can be used for command injection.
 
@@ -56,7 +56,7 @@ fg
 export TERM=xterm
 ```
 
-## Privilege escalation
+### Privilege escalation
 
 As suggested, we can look for files with SUID bit set using
 ```

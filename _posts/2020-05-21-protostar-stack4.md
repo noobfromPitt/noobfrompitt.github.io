@@ -6,7 +6,7 @@ header:
   image: "/images/protostar/protostar.png"
 ---
 
-# Protostar exercises - [stack4](https://exploit-exercises.lains.space/protostar/stack4/)
+## Protostar exercises - [stack4](https://exploit-exercises.lains.space/protostar/stack4/)
 
 #### About
 Stack4 takes a look at overwriting saved EIP and standard buffer overflows.

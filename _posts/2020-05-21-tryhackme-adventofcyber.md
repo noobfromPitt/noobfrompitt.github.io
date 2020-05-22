@@ -6,12 +6,12 @@ header:
   image: "/images/tryhackme/thm.png"
 ---
 
-# Advent of Cyber
+## Advent of Cyber
 
 
 url: https://tryhackme.com/room/25daysofchristmas
 
-## Day#1:
+#### Day#1:
 
 machine: 10.10.155.75
 website: http://10.10.155.75:3000
@@ -35,7 +35,7 @@ change the value of the `authid` cookie to this and reload the home page.
 This didn't work. When i encoded from https://www.base64encode.org/ site, the encoded string is a little different. its `bWNpbnZlbnRvcnl2NGVyOWxsMSFzcw==` and this value of cookie works. This need to be further investigated **TODO**
 The site lists the items requested by users and `mcinventory` requests `firewall` item
 
-## Day2:
+#### Day2:
 
 machine: 10.10.157.249
 website: http://10.10.157.249:3000
@@ -58,7 +58,7 @@ so the password is `defaultpass`
 after logging in to the `/sysadmin` page, there is a small image that says `Hey all - Please don't forget to BYOE(Bring Your Own Eggnog) for the partay!!`
 so the answer should be `eggnog`
 
-## Day3:
+#### Day3:
 
 a pcap file is given
 
@@ -87,7 +87,7 @@ We can use `hashcat` to try and get the password. from https://hashcat.net/wiki/
 within a few seconds, hashcat cracks it and the password is `rainbow`
 ![hashcat output]({{site.url}}{{site.baseurl}}/images/tryhackme/AdventOfCyber/day3-3.png)
 
-## Day4:
+### Day4:
 
 machine:10.10.233.224
 the username and password are given, so we can `ssh` to the machine
@@ -140,7 +140,7 @@ we can find if a backup file exists using `find / -name shadow.bak`
 looks like there is a file in `/var/`
 from the file we can see the hash of mcsysadmin is `jbosYsU/$qOYToX/hnKGjT0EscuUIiIqF8GHgokHdy/Rg/DaB.RgkrbeBXPdzpHdMLI6cQJLdFlS4gkBMzilDBYcQvu2ro/`
 
-## Day5:
+### Day5:
 
 image: https://blog.tryhackme.com/content/images/size/w2000/2019/12/thegrinch.jpg
 
@@ -177,7 +177,7 @@ on this version of the blog, she says that its her 5 year celebration sice she s
 
 reverse searching the first pic from the blog reveals that its of Ada lovelace (mother of computer)
 
-## Day6:
+### Day6:
 
 we are given a pcap file
 

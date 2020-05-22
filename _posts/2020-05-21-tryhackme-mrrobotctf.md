@@ -6,9 +6,9 @@ header:
   image: "/images/tryhackme/thm.png"
 ---
 
-# Tryhackme - [Mr Robot CTF](https://tryhackme.com/room/mrrobot)
+## Tryhackme - [Mr Robot CTF](https://tryhackme.com/room/mrrobot)
 
-## Recon:
+### Recon:
 
 `nmap -A 10.10.227.36` shows that there are 997 filtered port and port 22, 80 and 443 are filtered. This means that there is some kind of firewall blocking the nmap scans
 
@@ -19,7 +19,7 @@ Lets open the website anyway. the http site give a browser based shell with only
 If we use `wakeup` command, then the port seems to be opened. 
 Nothin interesting from the page source too
 
-## File enumeration
+### File enumeration
 
 lets run a gobuster on this.
 `gobuster dir -u http://10.10.227.36/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt`
@@ -32,7 +32,7 @@ There is a /images page but we dont have permissions to access it. THere are lot
 
 /key-1-of-3.txt page has the first key
 
-## wpscan
+### wpscan
 
 We also see wp-content and wp-login pages. So, we can run wpscan to find any wordpress vulnerabilities. I ran a wpscan using `wpscan --url 10.10.227.36`
 It reveals /xlmrpc.php page, which says that this page accepts only POST requests
@@ -59,7 +59,7 @@ This gives us a valid password: ER28-0652 for elliot
 
 After logging in, the user's dashboard is shown. The user doesnt have any posts or comments, but is an administrator. We can also see another user in the users tab. There are alos some images in media secion
 
-## Reverse shell
+### Reverse shell
 
 We can install a vulnerable plugin or we can install a reverse shell for wordpress. We can also use metasploit to get a reverse shell using the module `exploit/unix/webapp/wp_admin_shell_upload`
 
@@ -91,7 +91,7 @@ So, the password is *abcdefghijklmnopqrstuvwxyz*
 
 Lets login to robot user with this password. It works and now we can read the second key
 
-## Privilege escalation
+### Privilege escalation
 
 We need to escalate privileges to get a root login and find the third key.
 Lets check if robot has any sudo permissions using `sudo -l`

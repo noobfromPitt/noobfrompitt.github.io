@@ -7,7 +7,7 @@ header:
 ---
 
 
-# Protostar exercises - [stack1](https://exploit-exercises.lains.space/protostar/stack1/)
+## Protostar exercises - [stack1](https://exploit-exercises.lains.space/protostar/stack1/)
 
 #### About
 This level looks at the concept of modifying variables to specific values in the program, and how the variables are laid out in memory.
