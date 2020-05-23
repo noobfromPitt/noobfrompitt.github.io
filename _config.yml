@@ -95,7 +95,7 @@ analytics:
 author:
   name             : "Karthik Jadala"
   avatar           : "/images/misc/1.jpg" ## path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Recent grad from University of Pittsburgh, love doing CTFs and reverse engineering"
+  bio              : "Recent grad from University of Pittsburgh, love doing CTFs and reverse engineering, wannabe security researcher"
   location         : "Pittsburgh, PA"
   email            : "kaj98@pitt.edu"
   linkedin         : "karthikjadala"
@@ -117,7 +117,7 @@ author:
       url: "https://github.com/noobfromPitt"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/karthik_jadala09"
+      url: #"https://instagram.com/karthik_jadala09"
     - linkedin: "LinkedIn"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/karthikjadala/"

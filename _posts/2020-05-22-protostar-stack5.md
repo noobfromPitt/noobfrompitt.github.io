@@ -1,7 +1,7 @@
 ---
 title: "Protostar stack5 walkthrough"
 date: 2020-05-22
-tags: [protostar, stack5, walkthrough]
+tags: [buffer overflow, protostar, stack5, walkthrough]
 header:
   image: "/images/protostar/protostar.png"
 ---
@@ -20,7 +20,7 @@ If debugging the shellcode, use \xcc (int3) to stop the program executing and re
 remove the int3s once your shellcode is done.
 
 #### Source code:
-```
+```c
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -40,7 +40,7 @@ We can use `gets()` to write something onto stack. To solve this level, we need 
 
 ###### Vulnerability:
 
-`gets` is vulnerable function.
+`gets()` is vulnerable function.
 
 
 ###### Disassembly:
@@ -49,7 +49,7 @@ Lets disassemble the main function
 ```
 gdb ./stack5
 (gdb) set disassembly-flavor intel
-(gdb) diassemble main
+(gdb) disassemble main
 ```
 
 ![disassembly]({{site.url}}{{site.baseurl}}/images/protostar/stack5/disassemble.png)
@@ -133,7 +133,4 @@ Looks like we can run it. Lets remove the interrupt from our script and run stac
 ![done]({{site.url}}{{site.baseurl}}/images/protostar/stack5/done.png)
 
 Now we get a shell.
-
-
-
 

@@ -1,7 +1,7 @@
 ---
 title: "Protostar stack2 walkthrough"
 date: 2020-05-21
-tags: [ctf, protostar, stack2, walkthrough]
+tags: [buffer overflow, protostar, stack2, walkthrough]
 header:
   image: "/images/protostar/protostar.png"
 ---
@@ -14,7 +14,7 @@ Stack2 looks at environment variables, and how they can be set.
 This level is at /opt/protostar/bin/stack2
 
 #### Source code:
-```
+```c
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -53,9 +53,18 @@ We need to create a GREENIE environment variable and overwrite 'modified' variab
 
 ###### Vulnerability:
 
-`strcpy` is used to copy a string. if the destination string of a `strcpy()` is not large enough, then buffer overflow happens. We can use this to overflow the 64 bit buffer and write into the memory address where 'modified' is stored.
+`strcpy()` is used to copy a string. if the destination string of a `strcpy()` is not large enough, then buffer overflow happens. We can use this to overflow the 64 bit buffer and write into the memory address where 'modified' is stored.
 
 ###### Disassembly:
+
+Lets start by disassembling the binary
+
+```
+gdb ./stack2
+(gdb) set disassembly-flavor intel
+(gdb) disassemble main
+```
+
 
 ![disassembly]({{site.url}}{{site.baseurl}}/images/protostar/stack2/disassemble.png)
 

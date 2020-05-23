@@ -1,7 +1,7 @@
 ---
 title: "Protostar stack7 walkthrough"
 date: 2020-05-22
-tags: [protostar, stack7, walkthrough]
+tags: [ROP, return oriented programming, buffer overflow, protostar, stack7, walkthrough]
 header:
   image: "/images/protostar/protostar.png"
 ---
@@ -16,7 +16,7 @@ The metasploit tool “msfelfscan” can make searching for suitable instruction
 This level is at /opt/protostar/bin/stack7
 
 #### Source code
-```
+```c
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -57,7 +57,7 @@ The aim is to get a root shell. Similar to the previous problem, we need to over
 
 ###### Vulnerability:
 
-`gets` is vulnerable function.
+`gets()` is vulnerable function.
 
 
 ###### Disassembly:
@@ -125,7 +125,7 @@ Breakpoint 1 at 0x8048544: file stack7/stack7.c, line 24.
 First, lets get the esp value when ret is executed. We can find out that its 0xbffff7bc.
 Like we did in stack6, we can use a similar exploit to get the shell
 
-```
+```python
 import struct
 
 pad = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB"
@@ -157,7 +157,7 @@ We can also use [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) to find
 
 Lets use the address 0x08048492. Once we write the ret pointer (0xbffff7bc) to this address, We need to have some values on stack for each pop and a return address for the return  pointer. Lets add the in the sploit script.
 
-```
+```python
 import struct
 
 pad = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBB"
