@@ -30,7 +30,7 @@ This is pretty simple, the password is in the comments of page source
 
 #### Level 1
 
-![level1]({{site.url}}{{site.baseurl}}/images/overthewire/natas/leve11.png)
+![level1]({{site.url}}{{site.baseurl}}/images/overthewire/natas/level1.png)
 
 Similar to level0, it says the password is on the page. Since right click is disabled, we can use shortcut `Ctrl+U` or just go to `view-source:http://natas1.natas.labs.overthewire.org/`
 
@@ -182,18 +182,5 @@ After going through grep manual `man grep` we can see that there is a way to pri
 Lets try with this input http://natas10.natas.labs.overthewire.org/?needle=.*%20/etc/natas_webpass/natas11
 
 This will reveal the password
-
-#### Level 11
-
-![level11]({{site.url}}{{site.baseurl}}/images/overthewire/natas/level11.png)
-
-It has an input box which takes a hex value of color as input and changes background accordinly. It also says cookies are protected with XOR ecnryption. Again, there is a sourcecode page
-
-![level11-source]({{site.url}}{{site.baseurl}}/images/overthewire/natas/level11-source.png)
-
-Lets go over the code. First, the ?bgcolor key is taken from url and checked if it matches the pattern of hex color. It is then XOR encrypted using a $key and saved as cookie.
-
-The cookie also has a ?showpassword key which is set to 'no'. The page shows the password if it is set toy 'yes'.
-
 
 

@@ -123,7 +123,7 @@ Breakpoint 1 at 0x8048544: file stack7/stack7.c, line 24.
 ```
 
 First, lets get the esp value when ret is executed. We can find out that its 0xbffff7bc.
-Like we did in stack6, we can use a similar exploit to get the shell
+Like we did in stack6, we can use a similar pythonexploit to get the shell
 
 ```python
 import struct
@@ -142,7 +142,9 @@ print pad + eip + nopsled + shellcode
 
 But we cannot use this method everytime. We might run into some bad characters (like \x00 or \x0a or \x0d) or ASLR might be enabled. So, we cannot use the hardcoded addresses all the time. We can use ret2libc like we did in stack6. We can also search for ROP gadgets and use them.
 
-As suggested, we can use `msfelfscan` to find these.
+There are many tools to search for such gadgets.
+We can try [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) to find all unique ROPs using `ROPgadget --binary stack7`. It lists many unique [gadgets]({{site.url}}{{site.baseurl}}/misc/protostarStack7ROPgadgets.txt)
+But before that, as suggesting in the hints, lets use `msfelfscan` to find the gadgets.
 
 I looked for any `jmp esp` commands using `/usr/share/framework2/msfelfscan -j esp -f stack7` but couldn't find anything. But there are three `pop pop ret` commands
 
@@ -153,7 +155,6 @@ I looked for any `jmp esp` commands using `/usr/share/framework2/msfelfscan -j e
 0x080485c7   edi ebp ret
 ```
 
-We can also use [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) to find all unique ROPs using `ROPgadget --binary stack7`. It lists many unique [gadgets]({{site.url}}{{site.baseurl}}/misc/protostarStack7ROPgadgets.txt)
 
 Lets use the address 0x08048492. Once we write the ret pointer (0xbffff7bc) to this address, We need to have some values on stack for each pop and a return address for the return  pointer. Lets add the in the sploit script.
 
