@@ -9,7 +9,7 @@ header:
 ## Protostar exercises - [stack7](https://exploit-exercises.lains.space/protostar/stack7/)
 
 #### About
-Stack6 introduces return to .text to gain code execution.
+Stack7 introduces return to .text to gain code execution.
 
 The metasploit tool “msfelfscan” can make searching for suitable instructions very easy, otherwise looking through objdump output will suffice.
 
@@ -153,7 +153,7 @@ I looked for any `jmp esp` commands using `/usr/share/framework2/msfelfscan -j e
 0x080485c7   edi ebp ret
 ```
 
-We can also use [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) to find all unique ROPs using `ROPgadget --binary stack7`
+We can also use [ROPgadget](https://github.com/JonathanSalwan/ROPgadget) to find all unique ROPs using `ROPgadget --binary stack7`. It lists many unique [gadgets]({{site.url}}{{site.baseurl}}/misc/protostarStack7ROPgadgets.txt)
 
 Lets use the address 0x08048492. Once we write the ret pointer (0xbffff7bc) to this address, We need to have some values on stack for each pop and a return address for the return  pointer. Lets add the in the sploit script.
 
@@ -178,7 +178,7 @@ This will give us the root shell
 
 Lets use another ROP chain to get shell.
 
-From `ROPgadget` there are many gadgets. 
+Earlier, we used `ROPgadget` to get some [gadgets]({{site.url}}{{site.baseurl}}/misc/protostarStack7ROPgadgets.txt). Now les try using one of them
 
 ![ropgadgets]({{site.url}}{{site.baseurl}}/images/protostar/stack7/ropgadgets.png)
 

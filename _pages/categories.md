@@ -9,14 +9,14 @@ title: Categories
 <ul>
 <li> Exploit exercises - Protostar</li>
 <ul>
-<li>[stack0](https://noobfrompitt.github.io/protostar-stack0/)</li>
-<li>[stack1](https://noobfrompitt.github.io/protostar-stack1/)</li>
-<li>[stack2](https://noobfrompitt.github.io/protostar-stack2/)</li>
-<li>[stack3](https://noobfrompitt.github.io/protostar-stack3/)</li>
-<li>[stack4](https://noobfrompitt.github.io/protostar-stack4/)</li>
-<li>[stack5](https://noobfrompitt.github.io/protostar-stack5/)</li>
-<li>[stack6](https://noobfrompitt.github.io/protostar-stack6/)</li>
-<li>[stack7](https://noobfrompitt.github.io/protostar-stack7/)</li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack0/">Stack0</a></li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack1/">Stack1</a></li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack2/">Stack2</a></li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack3/">Stack3</a></li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack4/">Stack4</a></li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack5/">Stack5</a></li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack6/">Stack6</a></li>
+<li><a href="https://noobfrompitt.github.io/protostar-stack7/">Stack7</a></li>
 </ul>
 </ul>
 
@@ -24,9 +24,9 @@ title: Categories
 <ul>
 <li>TryHackMe</li>
 <ul>
-<li>[MrRobotCTF](https://noobfrompitt.github.io/tryhackme-mrrobotctf/)</li>
-<li>[AdventOfCyber](https://noobfrompitt.github.io/tryhackme-adventofcyber/)</li>
-<li>[Vulnuniversity](https://noobfrompitt.github.io/tryhackme-vulnuniversity/)</li>
+<li><a href="https://noobfrompitt.github.io/tryhackme-mrrobotctf/">MrRobotCTF</a></li>
+<li><a href="https://noobfrompitt.github.io/tryhackme-adventofcyber/">AdventOfCyber</a></li>
+<li><a href="https://noobfrompitt.github.io/tryhackme-vulnuniversity/">Vulnuniversity</a></li>
 </ul>
 </ul>
 
@@ -34,6 +34,5 @@ title: Categories
 <ul>
 <li>OverTheWire</li>
 <ul>
-<li>[Natas](https://noobfrompitt.github.io/overthewire-natas1/)</li>
-</ul>
+<li><a href="https://noobfrompitt.github.io/overthewire-natas1/">Natas</a></li>
 </ul>
