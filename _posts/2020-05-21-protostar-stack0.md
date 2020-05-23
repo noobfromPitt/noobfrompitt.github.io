@@ -8,9 +8,9 @@ header:
 
 ## Protostar exercises - [stack0](https://exploit-exercises.lains.space/protostar/stack0/)
 
-Exploit exercises provides multiple virtual machines with challenges to learn about different concepts related to security. Protostar is one of these VMs introducing to basic memory corruption issues like buffer overflows, format string and heap exploitation. In this and next few posts, I will attempt to solve these challenges. This is my follow along of LiveOverflow's ![Binary Exploitation playlist](https://www.youtube.com/playlist?list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN)
+Exploit exercises provides multiple virtual machines with challenges to learn about different concepts related to security. Protostar is one of these VMs introducing to basic memory corruption issues like buffer overflows, format string and heap exploitation. In this and next few posts, I will attempt to solve these challenges. This is my follow along of LiveOverflow's [Binary Exploitation playlist](https://www.youtube.com/playlist?list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN)
 
-Protostart VM can be downloaded from ![here](https://exploit-exercises.lains.space/protostar/). username is `user` and password is `user`. The binaries are located at "/opt/protostar/bin/"
+Protostart VM can be downloaded from [here](https://exploit-exercises.lains.space/protostar/). username is `user` and password is `user`. The binaries are located at "/opt/protostar/bin/"
 
 #### About
 This level introduces the concept that memory can be accessed outside of its allocated region, how the stack variables are laid out, and that modifying outside of the allocated memory can modify program execution.
