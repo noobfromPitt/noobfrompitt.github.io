@@ -27,10 +27,11 @@ title: Categories
 <li><a href="https://noobfrompitt.github.io/tryhackme-mrrobotctf/">MrRobotCTF</a></li>
 <li><a href="https://noobfrompitt.github.io/tryhackme-adventofcyber/">AdventOfCyber</a></li>
 <li><a href="https://noobfrompitt.github.io/tryhackme-vulnuniversity/">Vulnuniversity</a></li>
+<li><a href="https://noobfrompitt.github.io/tryhackme-wiresharkctf1/">WiresharkCTF-1</a></li>
 </ul>
 </ul>
 
-<h2>Other Challenges</h2>
+<h2>OverTheWire</h2>
 <ul>
 <li>OverTheWire</li>
 <ul>
