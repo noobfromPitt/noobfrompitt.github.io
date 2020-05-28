@@ -37,10 +37,12 @@ title: Categories
 <ul>
 <li><a href="https://noobfrompitt.github.io/overthewire-natas1/">Natas</a></li>
 </ul>
+</ul>
 
 <h2>Others</h2>
 <ul>
 <li>Nmap packet analysis</li>
 <ul>
 <li><a href="https://noobfrompitt.github.io/research-nmappacketanalysis">Nmap</a></li>
+</ul>
 </ul>

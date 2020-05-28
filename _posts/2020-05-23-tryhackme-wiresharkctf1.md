@@ -185,5 +185,5 @@ def decode(ct, cnt=100):
 	return b64d(tmp[1:])
 ```
 
-Looks like cnt of 60 is used.
+Looks like cnt of 61 was used.
 The final script will all the modifications can be found [here]({{site.url}}{{site.baseurl}}/misc/tryhackme-wiresharkctf1.py)
