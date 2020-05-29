@@ -1,5 +1,5 @@
 ---
-title: "How does nmap detect services on remote host - packet level analysis"
+title: "nmap service detection - a packet level analysis"
 date: 2020-05-28
 tags: [wireshark, nmap]
 header:
@@ -8,17 +8,17 @@ header:
 
 ## NMAP packet analysis
 
-We all use `nmap` all the time. Its the first tool to start recon with. Although `nmap` is used mostly just for port scanning, there are a ton of things it can do. I am not gonna go through it here, but `man nmap` is a good place to start (there is always something new I learn whenever I open the man page). In this post, My main goal is to understand at the network level how `nmap` detects services and their versions.
+`nmap` is arguably the most used tool for network discovery and port scanning. Its the first tool used in recon. Although it is used mostly just for port scanning, there are a ton of things it can do. I am not gonna go through it here, but `man nmap` is a good place to start (there is always something new I learn whenever I open the man page). In this post, My main goal is to understand at the network level how `nmap` detects services and their versions.
 
-### Summary:
+### Setup:
 
-I have two kali VMs running, one to run some services and another to run `nmap` and scan these services.
+I have two kali VMs running, one to run some services and another to run `nmap` and scan and detect these services.
 
-I'll start with a default scan without any options. I am running a simple web server on a non standard port to see if `nmap` can detect the service without any scripts/ probes. Next, I explore what happens with `-sV` option and `-sC` option.
+I'll start with a simple default scan without any options. I'll run a simple web server on a non standard port to see if `nmap` can detect the service without any scripts/ probes. Next, I explore what happens with `-sV` option and `-sC` option.
 
 ### Default scan
 
-Lets start off with the simple default scan without any scripts. I've started a python simplehttp server on port 81 on 10.0.2.12. `python3 -m http.server 81`. `nmap` is running on 10.0.2.15
+Lets start off with the default scan without any scripts. I've started a python simplehttp server on port 81 on 10.0.2.12. `python3 -m http.server 81`. `nmap` is running on 10.0.2.15
 
 ```
 nmap 10.0.2.12 -p 81
@@ -35,12 +35,15 @@ Nmap done: 1 IP address (1 host up) scanned in 0.31 seconds
 
 ![1-SYNACKRST]({{site.url}}{{site.baseurl}}/images/research/nmappacketanalysis/1-SYNACKRST.png)
 
-`nmap` just sends a SYN packet and if it receives a SYN ACK back, it confirms the port is open. TCP connection is not established here as `nmap` already got what it needed and it sends a RST packet to end the conversation. It reports the service associated with that port in `/usr/share/nmap/nmap-services`. SYN scan is the default port scanning option with `nmap`. There are other [options](https://nmap.org/book/man-port-scanning-techniques.html) available
+`nmap` just sends a SYN packet and if it receives a SYN ACK back, it confirms the port is open. TCP connection is not established here as `nmap` already got what it needed and it sends a RST packet to end the conversation. It looks up the service associated with that port in `/usr/share/nmap/nmap-services` and reports it. In this case, its `hosts2-ns`
+
+ SYN scan is the default port scanning option with `nmap`. There are other [options](https://nmap.org/book/man-port-scanning-techniques.html) available
 	
 
 ### Service/ version detection using -sV
 
 `-sV` option is used to detect the service running on the port and its version. Useful links [here](https://nmap.org/book/vscan-technique.html) and [here](https://nmap.org/book/vscan-technique-demo.html)
+I've started python http server like earlier but this time on port 999.
 
 ```
 nmap -sV 10.0.2.12 -p 999
@@ -56,6 +59,8 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 11.83 seconds
 ```
 
+At this point, we know how `nmap` checks if port is open. Here port 999 is open. Lets understand what `nmap` does next to find information about the service.
+
 After `nmap` detects the port to be open, it establishes a TCP connection and waits for a few seconds to check if the service replies back with a welcome banner (some services do this). `nmap` matches this with signatures in `/usr/share/nmap/nmap-service-probes` to determine service. This file has tons of signatures matching replies from various services. Not all services give these welcome banners.
 We can see this happen with `ssh`. 
 
@@ -63,7 +68,7 @@ I've started `ssh` on a non standard port 960 (default port is 22, it can be cha
 
 ![2-sv-ssh-960]({{site.url}}{{site.baseurl}}/images/research/nmappacketanalysis/2-sv-ssh-960.png)
 
-We can see on 9th packet host (10.0.2.12) sends `SSH-2.0-OpenSSH_8.1p1 Debian-1` without any request from `nmap` (10.0.2.15). 
+We can see on 9th packet, host (10.0.2.12) sends `SSH-2.0-OpenSSH_8.1p1 Debian-1` without any request from `nmap` (10.0.2.15). 
 `nmap` gets all the needed information (service and version) from this packet, so it doesn't send any probes after this, so it closes this connection. The initial port scan is done in the first three packets (3, 4, 5)
 
 But not all services send such banners. In case of `http`, `nmap` waits for about 6 seconds to get any banner and then sends some random data and tries to match the response.
@@ -71,11 +76,11 @@ But not all services send such banners. In case of `http`, `nmap` waits for abou
 ![2-sv-http-999-1]({{site.url}}{{site.baseurl}}/images/research/nmappacketanalysis/2-sv-http-999-1.png)
 
 We can see that after initial connection, it sends random bytes (JRMI..K) in packet 11
-And host replies to this with a http 400 error in packet 16
+And host replies to this with a http 400 error in packet 16. We can see the whole conversation with follow -> TCP stream (or "tcp.stream eq 1" filter)
 
 ![2-sv-http-999-2]({{site.url}}{{site.baseurl}}/images/research/nmappacketanalysis/2-sv-http-999-2.png)
 
-After this, `nmap` sends a bunch of `http` requests. `http` version can be extracted from the headers of the responses. These requests are sent by the .nse scripts (/usr/share/nmap/scripts) `nmap` runs. Debug flags can be added to get information about which scripts are running - `nmap -sV -d --version-trace 10.0.2.12 -p 999`. Following output shows just the scripts part of whole debug log
+Now `nmap` knows http is running on this port. So next, it sends a bunch of `http` requests. `http` version can be extracted from the headers of the responses. These requests are sent by the .nse scripts (/usr/share/nmap/scripts) run by `nmap`. Debug flags can be added to get information about which scripts are running `nmap -sV -d --version-trace 10.0.2.12 -p 999`. Following output shows just the scripts part of whole debug log
 
 ```
 NSE: Starting vmware-version M:55f671ba3738 against 10.0.2.12:999.
@@ -96,14 +101,14 @@ NSE: Starting http-server-header M:55f671c0e5a8 against 10.0.2.12:999.
 NSE: Finished http-server-header M:55f671c0e5a8 against 10.0.2.12:999.
 ```
 
-These can be seen in the `http` traffic as well
+The requests from these probes can be seen in the `http` traffic as well
 
 ![2-sv-http-999-3]({{site.url}}{{site.baseurl}}/images/research/nmappacketanalysis/2-sv-http-999-3.png)
 
 
-### Running default scripts using -sC
+### Default scripts using -sC
 
-`-sC` option runs the default .nse [scripts](https://nmap.org/book/nse-usage.html). Following is the part of debug log from the scan with debug flags - `nmap -sV -d --version-trace -sC --script-trace 10.0.2.12 -p 999`
+`-sC` option runs the default .nse [scripts](https://nmap.org/book/nse-usage.html). Following is the part of debug log from the scan with debug flags for version tracing and script tracing`nmap -sV -d --version-trace -sC --script-trace 10.0.2.12 -p 999`
 
 ```
 NSE: Starting address-info M:55ba29926dd8 against 10.0.2.12.
@@ -155,13 +160,13 @@ Lets examine some of the interesting requests from these logs belwo
 
 * `PROPFIND / HTTP/1.1`
 
-This is http method for distributed authoring like WebDAV, which allows clients to create, change and move documents on a server. Yes, it already looks shady - there are 37 exploits on [exploitdb](https://www.exploit-db.com/) already. According to the [RFC](https://tools.ietf.org/html/rfc4918#section-9.1), the method is used to retrieve properties, stored as XML, from a web resource. Nmap uses this method in the request to detect webdav installations. Although webDAV is rarely used, its extension CalDAV is widely used to access a remote calendar (like google calendar)
+This is http method for distributed authoring protocols like WebDAV, which allows clients to create, change and move documents on a server. Yes, it already looks shady - there are about 37 exploits on [exploitdb](https://www.exploit-db.com/) already. According to the [RFC](https://tools.ietf.org/html/rfc4918#section-9.1), this http method is used to retrieve properties stored as XML from a web resource. Nmap uses this method in the request to detect webdav installations. Although webDAV is rarely used, its extension CalDAV is widely used to access a remote calendar (like google calendar)
 
-This request is coming from the "http-webdav-scan" script
+This request is sent by "http-webdav-scan" script
 
 * `GET /nmaplowercheck1590497863 HTTP/1.1` 
 
-Then, nmap checks if the server is returning a proper 404 error. It does this by sending a `GET` request `GET /nmaplowercheck1590377321 HTTP/1.1`.
+With this request, nmap checks if the server is returning a proper 404 error.
 The number after 'nmaplowercheck' is just the epoch time
 
 * `GET /HNAP1 HTTP/1.1`
@@ -170,7 +175,7 @@ HNAP protocol is used to remotely manage netowrk devices. The `GET` request to `
 
 * Preflight requests:
 
-nmap sends a bunch of [preflight](https://developer.mozilla.org/en-US/docs/Glossary/preflight_request) requests, which uses `OPTIONS` method to check if some methods are allowed in the requests before actually using the method.
+nmap sends a bunch of [preflight](https://developer.mozilla.org/en-US/docs/Glossary/preflight_request) requests, which use `OPTIONS` method to check if some methods are allowed in the requests before actually using the method.
 
 ```
 OPTIONS / HTTP/1.1

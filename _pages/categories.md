@@ -43,6 +43,6 @@ title: Categories
 <ul>
 <li>Nmap packet analysis</li>
 <ul>
-<li><a href="https://noobfrompitt.github.io/research-nmappacketanalysis">Nmap</a></li>
+<li><a href="https://noobfrompitt.github.io/research-nmappacketanalysis">Nmap Service Detection</a></li>
 </ul>
 </ul>
